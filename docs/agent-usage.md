@@ -8,7 +8,9 @@ The recommended integration pattern is simple:
 2. The agent runs SkillGuard locally.
 3. The agent reads JSON output.
 4. The agent explains risk, capabilities, and evidence to the user.
-5. The agent asks for explicit confirmation before install, update, or execution when high-risk findings exist.
+5. After the user trusts a Skill, the agent creates a permission lockfile.
+6. Before update or reuse, the agent verifies permission drift.
+7. The agent asks for explicit confirmation before install, update, or execution when high-risk findings or added capabilities exist.
 
 ## Install for Agent Workspaces
 
@@ -23,6 +25,8 @@ If installation is not desired, agents can call the module directly:
 ```bash
 python -m skillguard scan examples/benign-skill --format json
 python -m skillguard scan-all examples --format json
+python -m skillguard lock examples/benign-skill
+python -m skillguard verify examples/benign-skill
 ```
 
 ## Scan One Skill
@@ -50,12 +54,29 @@ python -m skillguard scan-all /path/to/skills-root --format json
 
 Use this for directories that contain many Skill directories. SkillGuard discovers directories containing `SKILL.md` and scans each one separately.
 
+## Lock and Verify Permissions
+
+Create a permission baseline after review:
+
+```bash
+python -m skillguard lock /path/to/skill
+```
+
+Verify later versions against the lock:
+
+```bash
+python -m skillguard verify /path/to/skill --format json
+```
+
+Agents should treat newly added capabilities as requiring user review, even if the overall scan score is unchanged.
+
 ## Recommended Agent Policy
 
 - Do not execute target Skill code during review.
 - Do not print long matched snippets unless the user asks.
 - Do not paste real local secret values into the conversation.
 - Treat high and critical findings as requiring explicit user review.
+- Treat newly added capabilities from `verify` as requiring explicit user review.
 - Treat `SG-FLOW-001` as a reason to inspect whether the Skill's claimed purpose matches the data being sent.
 - Explain that static findings are evidence, not proof of malicious intent.
 - Prefer JSON output for automation and text output for human-readable summaries.

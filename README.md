@@ -2,11 +2,11 @@
 
 [English](README.md) | [Simplified Chinese](README.zh-CN.md)
 
-SkillGuard is a permission-first security scanner for Agent Skills.
+SkillGuard locks and diffs what an Agent Skill can access before you install or update it.
 
-> See exactly what an Agent Skill can access before you install it.
+> See new filesystem, network, environment, and command permissions before trust is granted.
 
-Agent Skills can contain natural-language instructions, scripts, dependency manifests, and installation logic. SkillGuard scans those files before installation or use, then reports concrete evidence: rule IDs, file locations, matched snippets, inferred capabilities, and remediation guidance.
+Agent Skills can contain natural-language instructions, scripts, dependency manifests, and installation logic. SkillGuard scans those files before installation or use, reports concrete evidence, and can lock a trusted permission baseline for later verification.
 
 ## Give This to Your Agent
 
@@ -24,7 +24,7 @@ Use SkillGuard to scan this Skill before I install it: <path-or-repo>
 
 ## Project Status
 
-SkillGuard is an early open source project. The current `v0.1` scope focuses on local static scanning for Agent Skill directories, with text and JSON reporting.
+SkillGuard is an early open source project. The current `v0.1` scope focuses on local static scanning, permission lockfiles, permission diffs, and text/JSON reporting.
 
 ## Why Agent Skills Need Auditing
 
@@ -45,6 +45,8 @@ python -m pip install -e ".[dev]"
 skillguard scan examples/benign-skill
 skillguard scan examples/exfiltration-skill --format json
 skillguard scan-all examples
+skillguard lock examples/benign-skill
+skillguard verify examples/benign-skill
 ```
 
 You can also run without installation:
@@ -69,6 +71,32 @@ Recommended agent flow:
 6. Treat high or critical findings as requiring explicit user review.
 
 This repository also includes an installable agent Skill at `skills/skillguard-auditor/SKILL.md`. See [docs/agent-usage.md](docs/agent-usage.md) for copy-ready instructions.
+
+## Permission Lockfiles
+
+Use `lock` after reviewing a Skill you trust:
+
+```bash
+skillguard lock ./some-skill
+```
+
+This creates `skillguard.lock` with the current content hash, risk summary, inferred capabilities, and evidence-backed permission baseline.
+
+After the Skill changes, run:
+
+```bash
+skillguard verify ./some-skill
+```
+
+Verification reports newly added or removed capabilities:
+
+```text
+New capabilities since lock:
++ network.connect: telemetry.example
+  Evidence: scripts/sync.py:42
+
+Recommendation: review before update or execution.
+```
 
 ## Real-World Smoke Tests
 
@@ -108,10 +136,10 @@ For a directory containing multiple Skills, use `scan-all`:
 ```text
 SkillGuard Skill Set Report
 Target: examples
-Skills scanned: 4
+Skills scanned: 5
 Highest risk score: 100/100 - CRITICAL
 
-Findings: 3 critical, 5 high, 5 medium, 0 low, 0 info
+Findings: 3 critical, 6 high, 7 medium, 0 low, 0 info
 
 Per-skill summary:
   CRITICAL 100/100   6 findings  examples/exfiltration-skill
@@ -179,7 +207,7 @@ Current rule categories:
 ## Roadmap
 
 - `v0.2`: GitHub URL scanning, SARIF output, GitHub Action, ignore comments, richer dependency parsing.
-- `v0.3`: Docker sandbox, fake secrets, observed filesystem/network behavior, `lock` and `verify`.
+- `v0.3`: Docker sandbox, fake secrets, observed filesystem/network behavior, richer permission policies.
 - Later: Codex/Claude Skill adapter, VS Code integration, policy generation, runtime least-privilege execution.
 
 ## Contributing Rules

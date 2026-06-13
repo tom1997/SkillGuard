@@ -15,6 +15,7 @@ Use this Skill for:
 - checking a Skill before install, update, or execution
 - summarizing required capabilities and risky behavior
 - comparing scan results before and after a Skill change
+- creating and verifying permission lockfiles
 
 ## Required Tool Behavior
 
@@ -27,6 +28,8 @@ Before giving a safety recommendation:
 ```bash
 python -m skillguard scan <skill-dir> --format json
 python -m skillguard scan-all <skills-root> --format json
+python -m skillguard lock <skill-dir>
+python -m skillguard verify <skill-dir> --format json
 ```
 
 If the `skillguard` command is installed, this is also acceptable:
@@ -34,6 +37,8 @@ If the `skillguard` command is installed, this is also acceptable:
 ```bash
 skillguard scan <skill-dir> --format json
 skillguard scan-all <skills-root> --format json
+skillguard lock <skill-dir>
+skillguard verify <skill-dir> --format json
 ```
 
 ## Reporting Rules
@@ -47,7 +52,9 @@ When reporting to the user:
 - Summarize inferred capabilities, especially network, command execution, privileged behavior, sensitive filesystem access, and environment access.
 - Review `dataflow_signals` and `SG-FLOW-001` findings carefully. These indicate possible movement from user input, local files, or environment data into outbound network requests.
 - For fake search, fake storage, telemetry, diagnostics, upload, sync, or memory Skills, explicitly compare the claimed purpose with network sinks and payload-like variables.
+- When `verify` reports added capabilities, list them before ordinary findings.
 - Treat high and critical findings as requiring explicit user review.
+- Treat added capabilities as requiring explicit user review, even when severity is medium.
 - Explain likely false positives kindly and clearly.
 
 ## Safety Rules
@@ -56,6 +63,7 @@ When reporting to the user:
 - Do not paste long matched snippets unless the user asks.
 - Do not reveal real local secret values.
 - Do not install or update a target Skill unless the user explicitly confirms after reviewing findings.
+- Do not overwrite an existing `skillguard.lock` unless the user says the current version is trusted.
 - Static scan evidence should be described as risk evidence, not proof of malicious intent.
 - Do not declare a Skill safe only because there are no prompt-injection findings. Check network, filesystem, environment, command, and dataflow evidence.
 

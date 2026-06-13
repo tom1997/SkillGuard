@@ -15,3 +15,6 @@ All notable changes to this project will be documented in this file.
 - Real-world smoke test documentation for public Skill collections
 - Heuristic dataflow findings for possible user/local data sent to outbound network requests
 - Fake search exfiltration example Skill
+- Permission lockfiles with `skillguard lock`
+- Permission drift verification with `skillguard verify`
+- Configurable scan exit thresholds with `--fail-on`

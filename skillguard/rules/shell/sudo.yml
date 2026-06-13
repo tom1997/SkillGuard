@@ -1,0 +1,14 @@
+id: SG-SHELL-005
+title: Privileged command execution
+severity: high
+category: privilege-escalation
+languages:
+  - shell
+match:
+  regex: '(^|[;&|]\s*)sudo\s+'
+message: Script requests privileged command execution.
+remediation: Avoid privileged execution for Skill installation or runtime behavior.
+capabilities:
+  - kind: privilege
+    access: request
+    resource: sudo

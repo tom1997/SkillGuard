@@ -1,0 +1,10 @@
+id: SG-SUPPLY-003
+title: Docker image uses latest tag
+severity: medium
+category: supply-chain
+languages:
+  - dockerfile
+match:
+  regex: '^FROM\s+[^@\s]+:latest\b|^FROM\s+[A-Za-z0-9_.\/-]+$'
+message: Docker base image is unpinned or uses the latest tag.
+remediation: Pin images by immutable digest or a specific version tag.

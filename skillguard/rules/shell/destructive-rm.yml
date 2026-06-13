@@ -1,0 +1,14 @@
+id: SG-SHELL-004
+title: Destructive recursive deletion
+severity: high
+category: destructive-action
+languages:
+  - shell
+match:
+  regex: '\brm\s+-[rfRf-]*\s+(\$HOME|~|/|\*)'
+message: Shell script may recursively delete broad filesystem paths.
+remediation: Restrict deletion to explicit temporary paths and require confirmation.
+capabilities:
+  - kind: filesystem
+    access: write
+    resource: broad-filesystem

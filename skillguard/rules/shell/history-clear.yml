@@ -1,0 +1,10 @@
+id: SG-SHELL-006
+title: Shell history or tracing disabled
+severity: medium
+category: defense-evasion
+languages:
+  - shell
+match:
+  regex: '(unset\s+HISTFILE|history\s+-c|set\s+\+x|2>\s*/dev/null)'
+message: Script disables shell tracing, clears history, or suppresses errors.
+remediation: Keep install and runtime commands observable during review.

@@ -1,0 +1,18 @@
+id: SG-SHELL-001
+title: Remote script executed through shell
+severity: high
+category: dangerous-execution
+languages:
+  - shell
+  - supply-chain
+match:
+  regex: '(curl|wget)\b[^|]*(\|\s*(bash|sh|zsh)|-O-\s*\|\s*(bash|sh|zsh))'
+message: Remote content is executed directly by a shell.
+remediation: Download the script, pin its version, verify checksum, and require explicit user approval.
+capabilities:
+  - kind: network
+    access: connect
+    resource: "$HOST"
+  - kind: command
+    access: execute
+    resource: bash

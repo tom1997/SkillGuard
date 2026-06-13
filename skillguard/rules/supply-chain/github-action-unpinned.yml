@@ -1,0 +1,11 @@
+id: SG-SUPPLY-004
+title: GitHub Action is not pinned to a commit
+severity: medium
+category: supply-chain
+languages:
+  - supply-chain
+  - config
+match:
+  regex: 'uses:\s+[^@\s]+@(?:main|master|v\d+|latest)\b'
+message: GitHub Action uses a mutable ref instead of an immutable commit SHA.
+remediation: Pin third-party actions to a full commit SHA.

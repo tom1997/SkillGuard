@@ -1,0 +1,10 @@
+id: SG-PROMPT-004
+title: Audit trail deletion requested
+severity: high
+category: defense-evasion
+languages:
+  - prompt
+match:
+  regex: '\b(delete|remove|clear|erase)\s+(the\s+|all\s+)?(audit\s+)?(logs?|history|trace|records?)\b'
+message: Instructions ask the agent to remove logs, history, or audit records.
+remediation: Preserve audit trails and disclose sensitive actions to the user.

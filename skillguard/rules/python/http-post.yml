@@ -1,0 +1,14 @@
+id: SG-PY-003
+title: Outbound HTTP request from Python
+severity: high
+category: data-exfiltration
+languages:
+  - python
+match:
+  regex: '(requests|httpx)\.(post|put|patch)\s*\('
+message: Python code sends outbound HTTP data.
+remediation: Document the destination, payload, and user confirmation flow for network writes.
+capabilities:
+  - kind: network
+    access: connect
+    resource: "$HOST"

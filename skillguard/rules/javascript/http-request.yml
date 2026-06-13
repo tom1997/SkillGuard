@@ -1,0 +1,14 @@
+id: SG-JS-003
+title: Outbound HTTP request from JavaScript
+severity: high
+category: data-exfiltration
+languages:
+  - javascript
+match:
+  regex: '(fetch|axios\.(post|put|patch)|http\.request|https\.request)\s*\('
+message: JavaScript code sends outbound network requests.
+remediation: Document the destination, payload, and user confirmation flow for network writes.
+capabilities:
+  - kind: network
+    access: connect
+    resource: "$HOST"

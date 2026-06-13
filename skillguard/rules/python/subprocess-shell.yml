@@ -1,0 +1,14 @@
+id: SG-PY-004
+title: Shell subprocess execution
+severity: high
+category: dangerous-execution
+languages:
+  - python
+match:
+  regex: 'subprocess\.(run|call|Popen|check_call|check_output)\([^)]*shell\s*=\s*True'
+message: Python subprocess runs through a shell, increasing command injection risk.
+remediation: Pass commands as argument lists and keep shell=False.
+capabilities:
+  - kind: command
+    access: execute
+    resource: shell

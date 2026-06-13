@@ -1,0 +1,10 @@
+id: SG-PROMPT-002
+title: Concealed action requested
+severity: high
+category: prompt-injection
+languages:
+  - prompt
+match:
+  regex: '\b(do not tell|dont tell|hide|conceal|silently|without informing)\b.{0,80}\b(user|operator|owner)\b'
+message: Instructions ask the agent to hide behavior from the user.
+remediation: Require explicit user-visible confirmation for sensitive behavior.

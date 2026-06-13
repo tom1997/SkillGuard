@@ -1,0 +1,14 @@
+id: SG-PY-002
+title: Environment variable access
+severity: medium
+category: permission-inference
+languages:
+  - python
+match:
+  regex: 'os\.environ|os\.getenv'
+message: Python code reads process environment variables.
+remediation: Read only documented environment variables and avoid collecting all environment values.
+capabilities:
+  - kind: environment
+    access: read
+    resource: "$ENV"

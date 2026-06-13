@@ -1,0 +1,14 @@
+id: SG-JS-001
+title: Environment variable access
+severity: medium
+category: permission-inference
+languages:
+  - javascript
+match:
+  regex: 'process\.env'
+message: JavaScript code reads process environment variables.
+remediation: Read only documented environment variables and avoid collecting all environment values.
+capabilities:
+  - kind: environment
+    access: read
+    resource: "$ENV"

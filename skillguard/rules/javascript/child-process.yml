@@ -1,0 +1,14 @@
+id: SG-JS-002
+title: Child process execution
+severity: high
+category: dangerous-execution
+languages:
+  - javascript
+match:
+  regex: '(child_process|execSync|spawnSync|exec\()'
+message: JavaScript code can spawn local commands.
+remediation: Avoid shell execution or validate arguments against a strict allowlist.
+capabilities:
+  - kind: command
+    access: execute
+    resource: node-child-process

@@ -1,0 +1,10 @@
+id: SG-SUPPLY-002
+title: Unpinned Python dependency version
+severity: medium
+category: supply-chain
+languages:
+  - supply-chain
+match:
+  regex: '^[A-Za-z0-9_.-]+(\[[^\]]+\])?\s*$'
+message: Python dependency is not pinned to an exact version.
+remediation: Pin dependencies with == and commit a lockfile when possible.

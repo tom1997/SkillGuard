@@ -1,0 +1,17 @@
+id: SG-SHELL-003
+title: Sensitive local file referenced by shell
+severity: critical
+category: data-exfiltration
+languages:
+  - shell
+match:
+  regex: '(~\/\.ssh\/id_rsa|~\/\.aws\/credentials|~\/\.kube\/config|~\/\.config\/gcloud)'
+message: Shell script references sensitive local credentials or cloud configuration.
+remediation: Restrict file access to the workspace and avoid reading credential stores.
+capabilities:
+  - kind: filesystem
+    access: sensitive-read
+    resource: "~/.ssh/**"
+  - kind: filesystem
+    access: sensitive-read
+    resource: "~/.aws/**"

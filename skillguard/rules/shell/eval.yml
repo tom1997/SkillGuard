@@ -1,0 +1,14 @@
+id: SG-SHELL-002
+title: Dynamic shell evaluation
+severity: high
+category: dangerous-execution
+languages:
+  - shell
+match:
+  regex: '(^|[;&|]\s*)eval\s+'
+message: Shell code uses eval, which can execute attacker-controlled input.
+remediation: Replace eval with explicit argument parsing and command invocation.
+capabilities:
+  - kind: command
+    access: execute
+    resource: shell

@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skillguard"
+version = "0.1.0"
+description = "Permission-first security scanner for Agent Skills."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "PyYAML>=6.0",
+]
+authors = [
+  { name = "SkillGuard contributors" },
+]
+license = "MIT"
+keywords = ["agent", "skills", "security", "scanner", "cli"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Topic :: Security",
+  "Programming Language :: Python :: 3",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+]
+
+[project.scripts]
+skillguard = "skillguard.cli.main:main"
+
+[tool.setuptools.package-data]
+skillguard = ["rules/**/*.yml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

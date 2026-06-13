@@ -1,0 +1,7 @@
+{
+  "name": "supply-chain-risk-skill",
+  "dependencies": {
+    "left-pad": "^1.3.0",
+    "helper": "latest"
+  }
+}

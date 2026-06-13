@@ -1,0 +1,46 @@
+# SkillGuard
+
+> Permission-first security scanner for Agent Skills.
+
+SkillGuard helps AI agents and developers inspect Agent Skills before install or execution. It statically scans `SKILL.md`, scripts, dependency hints, and configuration files, then reports concrete evidence and inferred capabilities.
+
+## Quick Start
+
+- Scan one Skill: `python -m skillguard scan <skill-dir> --format json`
+- Scan a collection: `python -m skillguard scan-all <skills-root> --format json`
+- Human-readable output: omit `--format json`
+
+## Agent Integration
+
+- One-prompt install: `Please install SkillGuard: https://raw.githubusercontent.com/tom1997/SkillGuard/main/docs/install.md`
+- Agent usage guide: `docs/agent-usage.md`
+- Chinese agent usage guide: `docs/agent-usage.zh-CN.md`
+- Installable Skill wrapper: `skills/skillguard-auditor/SKILL.md`
+- Rule authoring guide: `docs/rules.md`
+- Real-world smoke tests: `docs/real-world-smoke-tests.md`
+
+## Core Concepts
+
+- Findings include rule ID, severity, category, file, line number, snippet, message, remediation, and capabilities.
+- Capabilities summarize filesystem, network, command, environment, and privilege needs.
+- Dataflow signals summarize possible user input, local data, and outbound network write evidence.
+- High and critical findings should require explicit user review.
+- The current scanner is static and does not execute target Skill code.
+
+## Important Commands
+
+```bash
+python -m pip install -e ".[dev]"
+python -m pytest
+python -m skillguard scan examples/exfiltration-skill
+python -m skillguard scan-all examples --format json
+```
+
+## Roadmap
+
+- GitHub URL scanning
+- SARIF output
+- GitHub Action
+- ignore comments
+- Docker sandbox
+- lock and verify workflow

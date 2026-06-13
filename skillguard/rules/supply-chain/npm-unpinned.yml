@@ -1,0 +1,11 @@
+id: SG-SUPPLY-001
+title: Unpinned npm dependency version
+severity: medium
+category: supply-chain
+languages:
+  - supply-chain
+  - config
+match:
+  regex: '"[^"]+"\s*:\s*"(\*|latest|\^|~|>=|>)'
+message: Dependency version is floating or loosely constrained.
+remediation: Pin dependency versions and use a lockfile for repeatable installs.

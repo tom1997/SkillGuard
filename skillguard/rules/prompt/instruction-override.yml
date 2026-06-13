@@ -1,0 +1,10 @@
+id: SG-PROMPT-001
+title: Instruction override attempt
+severity: high
+category: prompt-injection
+languages:
+  - prompt
+match:
+  regex: '\b(ignore|override|disable)\b.{0,60}\b(previous|system|security|user)\b.{0,40}\binstructions?\b'
+message: Natural-language instructions attempt to override system, user, or security instructions.
+remediation: Remove instructions that ask the agent to bypass higher-priority policy or user intent.

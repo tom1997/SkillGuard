@@ -49,3 +49,39 @@ class LockReporter:
         if result.added:
             lines.append("Recommendation: review before update or execution.")
         return "\n".join(lines).rstrip()
+
+    def render_diff(self, result: VerificationResult) -> str:
+        lines = [
+            "SkillGuard Permission Diff",
+            f"Target: {result.target}",
+            f"Lockfile: {result.lockfile}",
+            f"Risk: {result.previous_label.upper()} {result.previous_score}/100 -> "
+            f"{result.current_label.upper()} {result.current_score}/100",
+            "",
+        ]
+
+        if not result.added and not result.removed:
+            lines.append("No capability changes since lock.")
+            return "\n".join(lines)
+
+        if result.added:
+            lines.append("Added capabilities:")
+            for change in result.added:
+                lines.append(f"+ {change.kind}.{change.access}: {change.resource}")
+                evidence = change.evidence[0] if change.evidence else None
+                if evidence:
+                    location = evidence.get("file", "unknown")
+                    if evidence.get("start_line"):
+                        location += f":{evidence['start_line']}"
+                    lines.append(f"  Evidence: {location}")
+            lines.append("")
+
+        if result.removed:
+            lines.append("Removed capabilities:")
+            for change in result.removed:
+                lines.append(f"- {change.kind}.{change.access}: {change.resource}")
+            lines.append("")
+
+        if result.added:
+            lines.append("Review added capabilities before install, update, or execution.")
+        return "\n".join(lines).rstrip()

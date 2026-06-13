@@ -26,7 +26,7 @@ python -m pip install -e ".[dev]"
 python -m skillguard scan examples/benign-skill --format json
 python -m skillguard scan-all examples --format json
 python -m skillguard lock examples/benign-skill
-python -m skillguard verify examples/benign-skill
+python -m skillguard diff examples/benign-skill
 ```
 
 ## 扫描单个 Skill
@@ -63,7 +63,7 @@ python -m skillguard lock /path/to/skill
 后续版本用锁文件验证：
 
 ```bash
-python -m skillguard verify /path/to/skill --format json
+python -m skillguard diff /path/to/skill --format json
 ```
 
 即使整体扫描分数没有变化，只要出现新增权限，智能体也应该提示用户复核。

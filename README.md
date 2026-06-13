@@ -46,7 +46,7 @@ skillguard scan examples/benign-skill
 skillguard scan examples/exfiltration-skill --format json
 skillguard scan-all examples
 skillguard lock examples/benign-skill
-skillguard verify examples/benign-skill
+skillguard diff examples/benign-skill
 ```
 
 You can also run without installation:
@@ -85,18 +85,20 @@ This creates `skillguard.lock` with the current content hash, risk summary, infe
 After the Skill changes, run:
 
 ```bash
-skillguard verify ./some-skill
+skillguard diff ./some-skill
 ```
 
-Verification reports newly added or removed capabilities:
+Diff reports newly added or removed capabilities:
 
 ```text
-New capabilities since lock:
+Added capabilities:
 + network.connect: telemetry.example
   Evidence: scripts/sync.py:42
 
-Recommendation: review before update or execution.
+Review added capabilities before install, update, or execution.
 ```
+
+The lockfile schema is documented in [docs/lockfile-schema.md](docs/lockfile-schema.md).
 
 ## Real-World Smoke Tests
 

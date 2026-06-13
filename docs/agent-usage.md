@@ -26,7 +26,7 @@ If installation is not desired, agents can call the module directly:
 python -m skillguard scan examples/benign-skill --format json
 python -m skillguard scan-all examples --format json
 python -m skillguard lock examples/benign-skill
-python -m skillguard verify examples/benign-skill
+python -m skillguard diff examples/benign-skill
 ```
 
 ## Scan One Skill
@@ -65,7 +65,7 @@ python -m skillguard lock /path/to/skill
 Verify later versions against the lock:
 
 ```bash
-python -m skillguard verify /path/to/skill --format json
+python -m skillguard diff /path/to/skill --format json
 ```
 
 Agents should treat newly added capabilities as requiring user review, even if the overall scan score is unchanged.

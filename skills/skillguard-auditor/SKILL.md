@@ -29,6 +29,7 @@ Before giving a safety recommendation:
 python -m skillguard scan <skill-dir> --format json
 python -m skillguard scan-all <skills-root> --format json
 python -m skillguard lock <skill-dir>
+python -m skillguard diff <skill-dir> --format json
 python -m skillguard verify <skill-dir> --format json
 ```
 
@@ -38,6 +39,7 @@ If the `skillguard` command is installed, this is also acceptable:
 skillguard scan <skill-dir> --format json
 skillguard scan-all <skills-root> --format json
 skillguard lock <skill-dir>
+skillguard diff <skill-dir> --format json
 skillguard verify <skill-dir> --format json
 ```
 

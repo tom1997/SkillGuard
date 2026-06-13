@@ -17,4 +17,5 @@ All notable changes to this project will be documented in this file.
 - Fake search exfiltration example Skill
 - Permission lockfiles with `skillguard lock`
 - Permission drift verification with `skillguard verify`
+- Permission diff entrypoint with `skillguard diff`
 - Configurable scan exit thresholds with `--fail-on`

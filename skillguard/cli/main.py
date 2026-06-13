@@ -85,6 +85,27 @@ def build_parser() -> argparse.ArgumentParser:
         default="added",
         help="Exit with code 1 on added capabilities, any risk change, or never.",
     )
+
+    diff = subparsers.add_parser("diff", help="Show permission changes since the SkillGuard lockfile.")
+    diff.add_argument("target", type=Path, help="Path to the Skill directory to diff.")
+    diff.add_argument(
+        "--lockfile",
+        type=Path,
+        default=None,
+        help="Lockfile path. Defaults to <skill-dir>/skillguard.lock.",
+    )
+    diff.add_argument(
+        "--format",
+        choices=("text", "json"),
+        default="text",
+        help="Output format.",
+    )
+    diff.add_argument(
+        "--fail-on",
+        choices=("never", "added", "risk"),
+        default="added",
+        help="Exit with code 1 on added capabilities, any risk change, or never.",
+    )
     return parser
 
 
@@ -92,41 +113,46 @@ def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 
-    if args.command == "scan":
-        result = Scanner().scan(args.target)
-        reporter = JsonReporter() if args.format == "json" else TerminalReporter()
-        print(reporter.render(result))
-        return 1 if should_fail(result, args.fail_on) else 0
+    try:
+        if args.command == "scan":
+            result = Scanner().scan(args.target)
+            reporter = JsonReporter() if args.format == "json" else TerminalReporter()
+            print(reporter.render(result))
+            return 1 if should_fail(result, args.fail_on) else 0
 
-    if args.command == "scan-all":
-        result = Scanner().scan_all(args.target)
-        reporter = JsonReporter() if args.format == "json" else TerminalReporter()
-        print(reporter.render(result))
-        return 1 if should_fail(result, args.fail_on) else 0
+        if args.command == "scan-all":
+            result = Scanner().scan_all(args.target)
+            reporter = JsonReporter() if args.format == "json" else TerminalReporter()
+            print(reporter.render(result))
+            return 1 if should_fail(result, args.fail_on) else 0
 
-    if args.command == "lock":
-        payload = create_lock(args.target, args.output)
-        if args.format == "json":
-            import json
+        if args.command == "lock":
+            payload = create_lock(args.target, args.output)
+            if args.format == "json":
+                import json
 
-            print(json.dumps(payload, indent=2, sort_keys=True))
-        else:
-            print(LockReporter().render_lock_created(payload))
-        return 0
-
-    if args.command == "verify":
-        result = verify_lock(args.target, args.lockfile)
-        if args.format == "json":
-            import json
-
-            print(json.dumps(result.to_dict(), indent=2, sort_keys=True))
-        else:
-            print(LockReporter().render_verification(result))
-        if args.fail_on == "never":
+                print(json.dumps(payload, indent=2, sort_keys=True))
+            else:
+                print(LockReporter().render_lock_created(payload))
             return 0
-        if args.fail_on == "risk":
-            return 1 if result.changed else 0
-        return 1 if result.has_added_capabilities else 0
+
+        if args.command in {"verify", "diff"}:
+            result = verify_lock(args.target, args.lockfile)
+            if args.format == "json":
+                import json
+
+                print(json.dumps(result.to_dict(), indent=2, sort_keys=True))
+            else:
+                reporter = LockReporter()
+                output = reporter.render_diff(result) if args.command == "diff" else reporter.render_verification(result)
+                print(output)
+            if args.fail_on == "never":
+                return 0
+            if args.fail_on == "risk":
+                return 1 if result.changed else 0
+            return 1 if result.has_added_capabilities else 0
+    except FileNotFoundError as exc:
+        parser.exit(2, f"skillguard: {exc}\n")
 
     parser.error(f"Unknown command: {args.command}")
     return 2

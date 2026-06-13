@@ -9,6 +9,7 @@ SkillGuard helps AI agents and developers inspect Agent Skills before install or
 - Scan one Skill: `python -m skillguard scan <skill-dir> --format json`
 - Scan a collection: `python -m skillguard scan-all <skills-root> --format json`
 - Lock trusted permissions: `python -m skillguard lock <skill-dir>`
+- Diff permission drift: `python -m skillguard diff <skill-dir> --format json`
 - Verify permission drift: `python -m skillguard verify <skill-dir> --format json`
 - Human-readable output: omit `--format json`
 

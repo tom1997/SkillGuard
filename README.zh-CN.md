@@ -45,7 +45,7 @@ skillguard scan examples/benign-skill
 skillguard scan examples/exfiltration-skill --format json
 skillguard scan-all examples
 skillguard lock examples/benign-skill
-skillguard verify examples/benign-skill
+skillguard diff examples/benign-skill
 ```
 
 也可以不安装，直接运行：
@@ -85,18 +85,20 @@ skillguard lock ./some-skill
 Skill 更新后运行：
 
 ```bash
-skillguard verify ./some-skill
+skillguard diff ./some-skill
 ```
 
-验证会展示新增或移除的权限：
+diff 会展示新增或移除的权限：
 
 ```text
-New capabilities since lock:
+Added capabilities:
 + network.connect: telemetry.example
   Evidence: scripts/sync.py:42
 
-Recommendation: review before update or execution.
+Review added capabilities before install, update, or execution.
 ```
+
+锁文件 schema 见 [docs/lockfile-schema.md](docs/lockfile-schema.md)。
 
 ## 真实样本 Smoke Test
 
